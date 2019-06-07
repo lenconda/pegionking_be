@@ -6,17 +6,17 @@ export class ShiftDetail {
   shiftNo: string
 
   @Column({ name: 'station_code' })
-  stationName: string
+  stationCode: string
 
   @Column({ name: 'expected_arrival' })
-  expectedArrival: string
+  expectedArrival: Date
 
   @Column({ name: 'actual_arrival' })
-  actualArrival: string
+  actualArrival: Date
 
   @Column({ name: 'expected_departure' })
-  expectedDeparture: string
+  expectedDeparture: Date
 
   @Column({ name: 'actual_departure' })
-  actualDeparture: string
+  actualDeparture: Date
 }

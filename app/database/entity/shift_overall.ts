@@ -15,11 +15,11 @@ export class ShiftOverall {
   startStation: string
 
   @Column({ name: 'start_time' })
-  startTime: string
+  startTime: Date
 
   @Column({ name: 'end_station' })
   endStation: string
 
   @Column({ name: 'end_time' })
-  endTime: string
+  endTime: Date
 }
