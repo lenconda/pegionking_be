@@ -28,7 +28,7 @@ getConnection().then(async connection => {
 
   if (config.isDev) app.use(logger())
 
-  let port: number = process.env.PORT ? parseInt(process.env.PORT) : 3000
+  let port: number = process.env.PORT ? parseInt(process.env.PORT) : 5000
 
   useContainer(Container)
   useKoaServer(app, {

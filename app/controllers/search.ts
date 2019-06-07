@@ -1,7 +1,10 @@
-import { JsonController, Get, Post, QueryParam, BodyParam } from 'routing-controllers'
+import {
+  JsonController,
+  Get,
+  QueryParam,
+  BadRequestError } from 'routing-controllers'
 import SearchService from '../services/search'
 import { Inject } from 'typedi'
-import moment from 'moment'
 
 @JsonController('/')
 export default class SearchController {
@@ -11,10 +14,13 @@ export default class SearchController {
   @Get('search')
   async search(@QueryParam('type') type: string,
                @QueryParam('station') station: string,
-               @QueryParam('condition') condition: string) {
+               @QueryParam('condition') condition: string,
+               @QueryParam('page') page: number = 1) {
     if (type === '1')
-      return await this.service.searchByDate(condition, station)
-    // else if (type === '2')
-      // return await this.serv
+      return await this.service.searchByDate(condition, station, page)
+    else if (type === '2')
+      return await this.service.searchByShift(condition, station, page)
+    else
+      throw new BadRequestError('Parameter error')
   }
 }
