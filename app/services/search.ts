@@ -29,14 +29,14 @@ export default class SearchService {
       try {
         connection.query(
             `SELECT * FROM shift_detail 
-          WHERE DATE_FORMAT(expected_arrival, '%Y%m%d') = ${date.split('-').join('')} 
+          WHERE DATE_FORMAT(expected_departure, '%Y%m%d') = ${date.split('-').join('')} 
           AND station_code = '${station}'
           LIMIT 10
           OFFSET ${(page - 1) * 10}`,
             (err, results, fields) => {
               connection.query(
                   `SELECT * FROM shift_detail 
-            WHERE DATE_FORMAT(expected_arrival, '%Y%m%d') = ${date.split('-').join('')} 
+            WHERE DATE_FORMAT(expected_departure, '%Y%m%d') = ${date.split('-').join('')} 
             AND station_code = '${station}'`,
                   (err, results1, fields) => {
                     resolve({
@@ -54,6 +54,7 @@ export default class SearchService {
   async searchByDate(date: string, station: string, page: number): Promise<{count: number, items: ShiftDetail[]}> {
     try {
       const raw = await this.selectDate(date, station, page)
+      console.log(raw)
       const result = raw.items.map((value, index) => {
         const {
           shift_no,
@@ -65,10 +66,10 @@ export default class SearchService {
         const item: ShiftDetail = {
           shiftNo: shift_no,
           stationCode: station_code,
-          expectedArrival: Date.parse(expected_arrival.toLocaleString()),
-          actualArrival: Date.parse(actual_arrival.toLocaleString()),
-          expectedDeparture: Date.parse(expected_departure.toLocaleString()),
-          actualDeparture: Date.parse(actual_departure.toLocaleString())
+          expectedArrival: (expected_arrival && Date.parse(expected_arrival.toLocaleString())) || 0,
+          actualArrival: (actual_arrival && Date.parse(actual_arrival.toLocaleString())) || 0,
+          expectedDeparture: (expected_departure && Date.parse(expected_departure.toLocaleString())) || 0,
+          actualDeparture: (actual_departure && Date.parse(actual_departure.toLocaleString())) || 0
         }
         return item
       })
@@ -105,10 +106,10 @@ export default class SearchService {
           stationCode } = value
         const item: ShiftDetail = {
           shiftNo, stationCode,
-          expectedArrival: Date.parse(expectedArrival.toLocaleString()),
-          actualArrival: Date.parse(actualArrival.toLocaleString()),
-          expectedDeparture: Date.parse(expectedDeparture.toLocaleString()),
-          actualDeparture: Date.parse(actualDeparture.toLocaleString())
+          expectedArrival: (expectedArrival && Date.parse(expectedArrival.toLocaleString())) || 0,
+          actualArrival: (actualArrival && Date.parse(actualArrival.toLocaleString())) || 0,
+          expectedDeparture: (expectedDeparture && Date.parse(expectedDeparture.toLocaleString())) || 0,
+          actualDeparture: (actualDeparture && Date.parse(actualDeparture.toLocaleString())) || 0
         }
         return item
       })
